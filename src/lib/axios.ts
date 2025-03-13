@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://gramx-be.onrender.com/',
+  // baseURL: 'https://gramx-be.onrender.com',
+  baseURL: 'https://localhost:3001',
+
   headers: {
     'Content-Type': 'application/json',
   },
