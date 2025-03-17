@@ -15,9 +15,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-black text-white flex">
+          {/* Sidebar */}
           <Sidebar />
-          <div className="ml-64 p-8">
+
+          {/* Main Content */}
+          <div className="flex-1 ml-64 p-8">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/users" element={<Users />} />

@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { data: stats } = useQuery('stats', async () => {
     const [users, tasks, leaderboard, batches] = await Promise.all([
       api.get('/admin/users'),
-      api.get('/api/tasks'),
+      api.get('/admin/tasks'),
       api.get('/admin/leaderboard'),
       api.get('/admin/batches'),
     ]);

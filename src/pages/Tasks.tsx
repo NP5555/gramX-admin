@@ -117,11 +117,11 @@ const Tasks = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gold-500">Tasks</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gold-500">Tasks</h1>
         <button
           onClick={() => handleOpenModal()}
-          className="bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
+          className="w-full sm:w-auto bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
         >
           Create New Task
         </button>
@@ -138,7 +138,7 @@ const Tasks = () => {
             <textarea
               value={formData.task}
               onChange={(e) => setFormData({ ...formData, task: e.target.value })}
-              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-2 text-white"
+              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-3 text-white"
               required
               rows={3}
             />
@@ -149,23 +149,23 @@ const Tasks = () => {
               type="number"
               value={formData.reward}
               onChange={(e) => setFormData({ ...formData, reward: Number(e.target.value) })}
-              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-2 text-white"
+              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-3 text-white"
               required
               min="0"
               step="0.01"
             />
           </div>
-          <div className="flex justify-end space-x-3">
+          <div className="flex flex-col sm:flex-row justify-end sm:space-x-3 space-y-2 sm:space-y-0 pt-2">
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 text-gray-400 hover:text-gray-200"
+              className="px-4 py-3 text-gray-400 hover:text-gray-200 order-2 sm:order-1"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
+              className="w-full sm:w-auto bg-gold-500 text-black px-4 py-3 rounded-lg hover:bg-gold-600 transition-colors order-1 sm:order-2"
               disabled={createTaskMutation.isLoading || updateTaskMutation.isLoading}
             >
               {createTaskMutation.isLoading || updateTaskMutation.isLoading
@@ -176,38 +176,71 @@ const Tasks = () => {
         </form>
       </Modal>
 
-      <div className="bg-black rounded-lg border border-gold-500/20 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gold-500/10">
-            <tr>
-              <th className="px-6 py-3 text-left text-gold-500">Task</th>
-              <th className="px-6 py-3 text-left text-gold-500">Reward</th>
-              <th className="px-6 py-3 text-left text-gold-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gold-500/10">
-            {data?.map((task) => (
-              <tr key={task._id} className="hover:bg-gold-500/5">
-                <td className="px-6 py-4">{task.task}</td>
-                <td className="px-6 py-4">{task.reward}</td>
-                <td className="px-6 py-4">
+      {/* For larger screens - table view */}
+      <div className="hidden sm:block bg-black rounded-lg border border-gold-500/20 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[600px]">
+            <thead className="bg-gold-500/10">
+              <tr>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Task</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Reward</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gold-500/10">
+              {data?.map((task) => (
+                <tr key={task._id} className="hover:bg-gold-500/5">
+                  <td className="px-3 sm:px-6 py-4">{task.task}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{task.reward}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleOpenModal(task)}
+                      className="text-gold-500 hover:text-gold-400 mr-3"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task._id)}
+                      className="text-red-500 hover:text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* For mobile - card view */}
+      <div className="sm:hidden space-y-4">
+        {data?.map((task) => (
+          <div key={task._id} className="bg-black rounded-lg border border-gold-500/20 p-4 hover:bg-gold-500/5">
+            <div className="flex flex-col space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gold-500/80 font-medium">Reward: {task.reward}</span>
+                <div className="flex space-x-3">
                   <button
                     onClick={() => handleOpenModal(task)}
-                    className="text-gold-500 hover:text-gold-400 mr-3"
+                    className="text-gold-500 hover:text-gold-400 p-1"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(task._id)}
-                    className="text-red-500 hover:text-red-400"
+                    className="text-red-500 hover:text-red-400 p-1"
                   >
                     Delete
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+              <div className="border-t border-gold-500/10 pt-3">
+                <p className="text-white">{task.task}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

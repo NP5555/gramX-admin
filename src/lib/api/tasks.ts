@@ -5,7 +5,7 @@ import { handleApiError } from './utils';
 export const taskApi = {
   getAllTasks: async () => {
     try {
-      const response = await api.get<Task[]>('/api/tasks');
+      const response = await api.get<Task[]>('/admin/tasks');
       return { data: response.data, error: null };
     } catch (error) {
       return { data: null, error: handleApiError(error) };
@@ -14,7 +14,7 @@ export const taskApi = {
 
   createTask: async (taskData: Omit<Task, '_id'>) => {
     try {
-      const response = await api.post<Task>('/api/tasks', taskData);
+      const response = await api.post<Task>('/admin/tasks', taskData);
       return { data: response.data, error: null };
     } catch (error) {
       return { data: null, error: handleApiError(error) };
@@ -23,7 +23,7 @@ export const taskApi = {
 
   updateTask: async (id: string, taskData: Partial<Task>) => {
     try {
-      const response = await api.put<Task>(`/api/tasks/${id}`, taskData);
+      const response = await api.put<Task>(`/admin/tasks/${id}`, taskData);
       return { data: response.data, error: null };
     } catch (error) {
       return { data: null, error: handleApiError(error) };
@@ -32,7 +32,7 @@ export const taskApi = {
 
   deleteTask: async (id: string) => {
     try {
-      await api.delete(`/api/tasks/${id}`);
+      await api.delete(`/admin/tasks/${id}`);
       return { error: null };
     } catch (error) {
       return { error: handleApiError(error) };
@@ -41,7 +41,7 @@ export const taskApi = {
 
   getTask: async (id: string) => {
     try {
-      const response = await api.get<Task>(`/api/tasks/${id}`);
+      const response = await api.get<Task>(`/admin/tasks/${id}`);
       return { data: response.data, error: null };
     } catch (error) {
       return { data: null, error: handleApiError(error) };

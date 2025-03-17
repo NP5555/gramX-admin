@@ -95,11 +95,11 @@ const Leaderboard = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gold-500">Leaderboard</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gold-500">Leaderboard</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
+          className="w-full sm:w-auto bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
         >
           Add New Entry
         </button>
@@ -116,7 +116,7 @@ const Leaderboard = () => {
             <select
               value={formData.userId}
               onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
-              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-2 text-white"
+              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-3 text-white"
               required
             >
               <option value="">Select a user</option>
@@ -133,7 +133,7 @@ const Leaderboard = () => {
               type="number"
               value={formData.coins}
               onChange={(e) => setFormData({ ...formData, coins: Number(e.target.value) })}
-              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-2 text-white"
+              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-3 text-white"
               required
               min="0"
             />
@@ -144,22 +144,22 @@ const Leaderboard = () => {
               type="number"
               value={formData.shares}
               onChange={(e) => setFormData({ ...formData, shares: Number(e.target.value) })}
-              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-2 text-white"
+              className="w-full bg-gray-800 border border-gold-500/20 rounded px-3 py-3 text-white"
               required
               min="0"
             />
           </div>
-          <div className="flex justify-end space-x-3">
+          <div className="flex flex-col sm:flex-row justify-end sm:space-x-3 space-y-2 sm:space-y-0 pt-2">
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 text-gray-400 hover:text-gray-200"
+              className="px-4 py-3 text-gray-400 hover:text-gray-200 order-2 sm:order-1"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-gold-500 text-black px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors"
+              className="w-full sm:w-auto bg-gold-500 text-black px-4 py-3 rounded-lg hover:bg-gold-600 transition-colors order-1 sm:order-2"
               disabled={createEntryMutation.isLoading}
             >
               {createEntryMutation.isLoading ? 'Adding...' : 'Add Entry'}
@@ -168,38 +168,66 @@ const Leaderboard = () => {
         </form>
       </Modal>
 
-      <div className="bg-black rounded-lg border border-gold-500/20 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gold-500/10">
-            <tr>
-              <th className="px-6 py-3 text-left text-gold-500">Position</th>
-              <th className="px-6 py-3 text-left text-gold-500">User</th>
-              <th className="px-6 py-3 text-left text-gold-500">Coins</th>
-              <th className="px-6 py-3 text-left text-gold-500">Shares</th>
-              <th className="px-6 py-3 text-left text-gold-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gold-500/10">
-            {leaderboard?.map((entry) => (
-              <tr key={entry._id} className="hover:bg-gold-500/5">
-                <td className="px-6 py-4">{entry.postion}</td>
-                <td className="px-6 py-4">
-                  {entry.userId.name}
-                </td>
-                <td className="px-6 py-4">{entry.coins}</td>
-                <td className="px-6 py-4">{entry.shares}</td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => handleDelete(entry._id)}
-                    className="text-red-500 hover:text-red-400"
-                  >
-                    Delete
-                  </button>
-                </td>
+      {/* For larger screens - table view */}
+      <div className="hidden sm:block bg-black rounded-lg border border-gold-500/20 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px]">
+            <thead className="bg-gold-500/10">
+              <tr>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Position</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">User</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Coins</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Shares</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-gold-500 whitespace-nowrap">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gold-500/10">
+              {leaderboard?.map((entry) => (
+                <tr key={entry._id} className="hover:bg-gold-500/5">
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{entry.postion}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    {entry.userId ? entry.userId.name : 'Unknown User'}
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{entry.coins}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{entry.shares}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(entry._id)}
+                      className="text-red-500 hover:text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* For mobile - card view */}
+      <div className="sm:hidden space-y-4">
+        {leaderboard?.map((entry) => (
+          <div key={entry._id} className="bg-black rounded-lg border border-gold-500/20 p-4 hover:bg-gold-500/5">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-gold-500 font-medium">Position: {entry.postion}</span>
+              <button
+                onClick={() => handleDelete(entry._id)}
+                className="text-red-500 hover:text-red-400 p-2"
+              >
+                Delete
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-y-2">
+              <span className="text-gold-500/80">User:</span>
+              <span>{entry.userId ? entry.userId.name : 'Unknown User'}</span>
+              <span className="text-gold-500/80">Coins:</span>
+              <span>{entry.coins}</span>
+              <span className="text-gold-500/80">Shares:</span>
+              <span>{entry.shares}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

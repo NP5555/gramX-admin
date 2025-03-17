@@ -17,12 +17,7 @@ export const leaderboardApi = {
   getLeaderboard: async () => {
     try {
       const response = await api.get<LeaderboardEntry[]>('/admin/leaderboard');
-      // Filter out entries with null userId or transform them
-      const validEntries = response.data.map(entry => ({
-        ...entry,
-        userId: entry.userId || { name: 'Deleted User', email: '' }
-      }));
-      return { data: validEntries, error: null };
+      return { data: response.data, error: null };
     } catch (error) {
       return { data: null, error: handleApiError(error) };
     }
