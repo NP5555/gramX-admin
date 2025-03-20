@@ -184,7 +184,7 @@ const Leaderboard = () => {
             <tbody className="divide-y divide-gold-500/10">
               {leaderboard?.map((entry) => (
                 <tr key={entry._id} className="hover:bg-gold-500/5">
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{entry.postion}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{entry.position}</td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                     {entry.userId ? entry.userId.name : 'Unknown User'}
                   </td>
@@ -210,7 +210,7 @@ const Leaderboard = () => {
         {leaderboard?.map((entry) => (
           <div key={entry._id} className="bg-black rounded-lg border border-gold-500/20 p-4 hover:bg-gold-500/5">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-gold-500 font-medium">Position: {entry.postion}</span>
+              <span className="text-gold-500 font-medium">Position: {entry.position}</span>
               <button
                 onClick={() => handleDelete(entry._id)}
                 className="text-red-500 hover:text-red-400 p-2"

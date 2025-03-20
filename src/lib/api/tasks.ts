@@ -1,6 +1,19 @@
 import api from '../axios';
-import { Task } from '../types';
 import { handleApiError } from './utils';
+
+export interface Task {
+  _id: string;
+  task: string;
+  description: string;
+  reward: number;
+  platform: 'twitter' | 'youtube' | 'instagram' | 'telegram' | 'other';
+  platformId?: string;
+  verificationMethod: 'api' | 'manual' | 'screenshot' | 'oauth';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateTaskPayload = Omit<Task, '_id' | 'createdAt' | 'updatedAt'>;
 
 export const taskApi = {
   getAllTasks: async () => {
@@ -12,7 +25,7 @@ export const taskApi = {
     }
   },
 
-  createTask: async (taskData: Omit<Task, '_id'>) => {
+  createTask: async (taskData: CreateTaskPayload) => {
     try {
       const response = await api.post<Task>('/admin/tasks', taskData);
       return { data: response.data, error: null };
@@ -21,7 +34,7 @@ export const taskApi = {
     }
   },
 
-  updateTask: async (id: string, taskData: Partial<Task>) => {
+  updateTask: async (id: string, taskData: Partial<CreateTaskPayload>) => {
     try {
       const response = await api.put<Task>(`/admin/tasks/${id}`, taskData);
       return { data: response.data, error: null };
